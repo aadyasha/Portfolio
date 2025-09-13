@@ -287,17 +287,29 @@
   </nav>
 
   <!-- Welcome -->
-  <section class="welcome" id="home">
-    <div class="photo-wrapper">
-      <img src="images/AS IMG.png" alt="My Photo">
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-    </div>
-    <h1>Hi, I'm Aadyasha Sahoo</h1>
-    <>A passionate Web Developer who loves building interactive experiences.<br> Glad to connect with you!</p>
-    <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
-  </section>
+
+<section class="welcome" id="home">
+  <div class="photo-wrapper">
+    <img src="images/AS IMG.png" alt="My Photo">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <!-- Typing Animation -->
+  <h1 id="typing-text"></h1>
+  <p>Glad to connect with you!</p>
+
+  <!-- Buttons -->
+  <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+    Get in Touch
+  </button>
+
+  <a href="images/Aadyasha Sahoo_Resume_GyanSys.jpg" download>
+    <button style="margin-top:15px;">Download CV</button>
+  </a>
+</section>
+
 
   <!-- Hobbies -->
   <section class="hobbies" id="hobbies">
@@ -428,6 +440,33 @@
       e.preventDefault();
       alert("Message sent! (Backend can be added here)");
     }
+    // Typing Animation
+const texts = ["I'm Aadyasha Sahoo", "I'm a Web Developer", "I'm a Passionate Learner"];
+let count = 0;
+let index = 0;
+let currentText = "";
+let letter = "";
+const typingElement = document.getElementById("typing-text");
+
+function type() {
+  if (count === texts.length) {
+    count = 0; // restart loop
+  }
+  currentText = texts[count];
+  letter = currentText.slice(0, ++index);
+
+  typingElement.textContent = letter;
+
+  if (letter.length === currentText.length) {
+    count++;
+    index = 0;
+    setTimeout(type, 1500); // pause before next text
+  } else {
+    setTimeout(type, 100);
+  }
+}
+type();
+
   </script>
 </body>
 </html>
