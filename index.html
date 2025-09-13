@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Dreamy Portfolio</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg,#ffdee9,#b5fffc,#fbc2eb,#a18cd1);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color:#3b2148;
+      overflow-x:hidden;
+    }
+    @keyframes gradientShift {
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    section { padding:70px 20px; position:relative; overflow:hidden; }
+    h1,h2 { text-align:center; margin-bottom:20px; }
+
+    /* Navbar */
+    nav {
+      position:fixed;
+      top:20px; right:30px;
+      display:flex;
+      gap:20px;
+      z-index:1000;
+    }
+    nav a {
+      text-decoration:none;
+      font-weight:bold;
+      color:#3b2148;
+      background:rgba(255,255,255,0.6);
+      padding:8px 14px;
+      border-radius:10px;
+      transition:.3s;
+    }
+    nav a:hover {
+      background:#fff;
+      box-shadow:0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Floating bubbles */
+    .bubble {
+      position:absolute;
+      border-radius:50%;
+      background:rgba(255,255,255,0.25);
+      animation: moveBubble linear infinite;
+    }
+    @keyframes moveBubble {
+      0% { transform:translate(0,0) scale(1); opacity:.8; }
+      25% { transform:translate(80px,-120px) scale(1.2); opacity:.5; }
+      50% { transform:translate(-100px,100px) scale(0.9); opacity:.6; }
+      75% { transform:translate(120px,-80px) scale(1.1); opacity:.4; }
+      100% { transform:translate(0,0) scale(1); opacity:.7; }
+    }
+
+    /* Dreamy clouds */
+    .cloud {
+      position:absolute;
+      background:rgba(255,255,255,0.5);
+      border-radius:50%;
+      filter:blur(30px);
+      animation: driftClouds linear infinite;
+    }
+    @keyframes driftClouds {
+      0% { transform:translateX(-200px); }
+      100% { transform:translateX(120vw); }
+    }
+
+    /* Welcome section */
+    .welcome {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      position:relative;
+    }
+    .welcome h1 { font-size:2.8rem; margin-bottom:10px; }
+    .welcome p { font-size:1.3rem; margin-bottom:20px; }
+
+    .photo-wrapper {
+      position:relative;
+      width:220px; height:220px;
+      margin-bottom:60px;
+    }
+    .photo-wrapper img {
+      width:100%; height:100%; border-radius:50%;
+      object-fit:cover;
+      border:4px solid rgba(255,255,255,0.7);
+      z-index:2; position:relative;
+    }
+    .ring {
+      position:absolute; border-radius:50%;
+      top:50%; left:50%; transform:translate(-50%,-50%);
+      border:3px solid transparent;
+      background:conic-gradient(#ff9a9e,#fad0c4,#a18cd1,#fbc2eb,#ff9a9e);
+      -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      animation: spin 15s linear infinite;
+    }
+    .ring:nth-child(2) { width:270px; height:270px; animation-duration:25s; opacity:.7; }
+    .ring:nth-child(3) { width:310px; height:310px; animation-duration:35s; opacity:.5; }
+    .ring:first-child { width:240px; height:240px; }
+    @keyframes spin { from{transform:translate(-50%,-50%) rotate(0);} to{transform:translate(-50%,-50%) rotate(360deg);} }
+
+    .welcome button {
+      background:#fff; color:#a14ca1;
+      font-size:1rem; padding:10px 20px;
+      border:none; border-radius:8px;
+      cursor:pointer; transition:.3s;
+    }
+    .welcome button:hover { transform:scale(1.1); background:#fef3ff; }
+
+    /* Hobbies Ferris Wheel */
+    .hobbies { 
+      text-align:center; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .wheel {
+      width:420px; height:420px; margin:40px auto; position:relative;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .wheel-rotation {
+      position:absolute; width:100%; height:100%;
+      border-radius:50%;
+      animation: rotate360 15s linear infinite;
+      transform-origin:center;
+    }
+    @keyframes rotate360 { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+    @keyframes reverseRotate360 { from{transform:rotate(0);} to{transform:rotate(-360deg);} }
+
+    .wheel-item {
+      position:absolute;
+      top:50%; left:50%;
+      width:88px; height:88px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(255,255,255,0.85);
+      color:#3b2148; font-size:28px;
+      cursor:pointer;
+      border:2px solid rgba(255,255,255,0.8);
+      transition:transform .3s ease, box-shadow .3s ease, filter .3s ease;
+      filter: drop-shadow(0 4px 8px rgba(160, 100, 200, 0.2));
+    }
+    .wheel-item:hover { transform: scale(1.2); filter: drop-shadow(0 8px 16px rgba(160, 100, 200, 0.4)); }
+    .wheel-item svg { width:32px; height:32px; stroke:#3b2148; stroke-width:2.5; }
+
+    /* Positions around circle */
+    .wheel-item:nth-child(1){ transform:translate(-50%, -50%) rotate(0deg) translate(180px) rotate(0deg); }
+    .wheel-item:nth-child(2){ transform:translate(-50%, -50%) rotate(60deg) translate(180px) rotate(-60deg); }
+    .wheel-item:nth-child(3){ transform:translate(-50%, -50%) rotate(120deg) translate(180px) rotate(-120deg); }
+    .wheel-item:nth-child(4){ transform:translate(-50%, -50%) rotate(180deg) translate(180px) rotate(-180deg); }
+    .wheel-item:nth-child(5){ transform:translate(-50%, -50%) rotate(240deg) translate(180px) rotate(-240deg); }
+    .wheel-item:nth-child(6){ transform:translate(-50%, -50%) rotate(300deg) translate(180px) rotate(-300deg); }
+
+    .wheel-center {
+      width:120px; height:120px; border-radius:50%;
+      background:rgba(255,255,255,0.85);
+      backdrop-filter:blur(8px);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:bold; color:#3b2148;
+      z-index:3;
+      animation: glowing 2s ease-in-out infinite alternate;
+      box-shadow: 0 0 10px rgba(161, 76, 161, 0.4);
+    } 
+    @keyframes glowing {
+      from { box-shadow: 0 0 10px rgba(161, 76, 161, 0.4); }
+      to { box-shadow: 0 0 20px rgba(161, 76, 161, 0.8); }
+    }
+
+    /* Hobby description box */
+    .hobby-desc {
+      max-width:650px;
+      margin:30px auto;
+      padding:25px;
+      background:rgba(255,255,255,0.25);
+      border-radius:30px 10px 30px 10px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.15);
+      backdrop-filter:blur(12px);
+      font-size:1.1rem;
+      line-height:1.6;
+      opacity:0;
+      max-height:0;
+      overflow:hidden;
+      transition:opacity .5s ease, max-height .5s ease;
+    }
+    .hobby-desc.show {
+      opacity:1;
+      max-height: 500px;
+    }
+
+
+    /* Skills section */
+    .skills { max-width:700px; margin:auto; }
+    .skill { margin-bottom:25px; }
+    .skill-name { font-weight:bold; margin-bottom:6px; }
+    .skill-bar {
+      width:100%; height:22px;
+      background:rgba(255,255,255,0.3);
+      border-radius:12px;
+      overflow:hidden;
+    }
+    .skill-progress {
+      height:100%; width:0;
+      border-radius:12px;
+      background:linear-gradient(90deg,#ff4fa3,#b15cff,#ff9a3c);
+      box-shadow:0 4px 15px rgba(100,50,150,0.4);
+      transition:width 2s ease;
+      display:flex; align-items:center; justify-content:flex-end;
+      padding-right:8px;
+      font-size:0.85rem; font-weight:bold;
+      color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    /* Contact */
+    .contact { text-align:center; }
+    .contact form {
+      background:rgba(255,255,255,0.2);
+      padding:30px;
+      max-width:450px;
+      margin:auto;
+      border-radius:20px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    }
+    .contact input,.contact textarea {
+      width:100%; margin:10px 0; padding:12px;
+      border:none; border-radius:10px;
+      background:rgba(255,255,255,0.7);
+      font-size:1rem;
+      outline:none;
+    }
+    .contact button {
+      margin-top:10px;
+      background:#a14ca1; color:#fff;
+      padding:12px 24px; border:none;
+      border-radius:10px;
+      font-size:1rem;
+      cursor:pointer;
+      transition:.3s;
+    }
+    .contact button:hover { background:#7b2f7b; }
+
+    /* Footer */
+    footer {
+      text-align:center;
+      padding:20px;
+      background:rgba(255,255,255,0.2);
+      backdrop-filter:blur(8px);
+      margin-top:40px;
+      border-top:1px solid rgba(255,255,255,0.3);
+    }
+    .social-icons {
+      display:flex;
+      justify-content:center;
+      gap:25px;
+      margin-bottom:10px;
+    }
+    .social-icons a {
+      color:#3b2148;
+      text-decoration:none;
+      font-size:28px;
+      transition:.3s;
+    }
+    .social-icons a:hover { color:#a14ca1; transform:scale(1.2); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#hobbies">Hobbies</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact Me</a>
+  </nav>
+
+  <!-- Welcome -->
+  <section class="welcome" id="home">
+    <div class="photo-wrapper">
+      <img src="images/AS IMG.png" alt="My Photo">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <h1>Hi, I'm Aadyasha Sahoo</h1>
+    <>A passionate Web Developer who loves building interactive experiences.<br> Glad to connect with you!</p>
+    <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
+  </section>
+
+  <!-- Hobbies -->
+  <section class="hobbies" id="hobbies">
+    <h2>My Hobbies</h2>
+    <div class="wheel">
+      <div class="wheel-rotation">
+        <div class="wheel-item" data-hobby="music"><i data-lucide="music"></i></div>
+        <div class="wheel-item" data-hobby="reading"><i data-lucide="book"></i></div>
+        <div class="wheel-item" data-hobby="gaming"><i data-lucide="gamepad-2"></i></div>
+        <div class="wheel-item" data-hobby="travel"><i data-lucide="plane"></i></div>
+        <div class="wheel-item" data-hobby="cooking"><i data-lucide="utensils"></i></div>
+        <div class="wheel-item" data-hobby="art"><i data-lucide="palette"></i></div>
+      </div>
+      <div class="wheel-center">Me</div>
+    </div>
+    <div id="hobby-desc" class="hobby-desc"></div>
+  </section>
+
+  <!-- Skills -->
+  <section class="skills" id="skills">
+    <h2>My Skills</h2>
+    <div class="skill">
+      <div class="skill-name">HTML</div>
+      <div class="skill-bar"><div class="skill-progress" data-skill="90%">90%</div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-name">CSS</div>
+      <div class="skill-bar"><div class="skill-progress" data-skill="80%">80%</div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-name">Java</div>
+      <div class="skill-bar"><div class="skill-progress" data-skill="50%">50%</div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-name">Python</div>
+      <div class="skill-bar"><div class="skill-progress" data-skill="50%">50%</div></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <h2>Contact Me</h2>
+    <form onsubmit="submitForm(event)">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="social-icons">
+      <a href="https://github.com/aadyasha" target="_blank" title="GitHub"><i data-lucide="github"></i></a>
+      <a href="https://www.linkedin.com/in/aadyashasahoo/" target="_blank" title="LinkedIn"><i data-lucide="linkedin"></i></a>
+    </div>
+    <p>© 2025 Aadyasha. All rights reserved.</p>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    // Add bubbles to each section
+    document.querySelectorAll("section").forEach(sec=>{
+      for(let i=0;i<6;i++){
+        const b=document.createElement("div");
+        b.className="bubble";
+        const size=Math.random()*60+30;
+        b.style.width=size+"px";
+        b.style.height=size+"px";
+        b.style.left=Math.random()*100+"%";
+        b.style.top=Math.random()*100+"%";
+        b.style.animationDuration=(20+Math.random()*20)+"s";
+        sec.appendChild(b);
+      }
+    });
+
+    // Add dreamy clouds
+    document.querySelectorAll("section").forEach(sec=>{
+      for(let i=0;i<3;i++){
+        const c=document.createElement("div");
+        c.className="cloud";
+        const size=Math.random()*200+100;
+        c.style.width=size+"px";
+        c.style.height=size/1.8+"px";
+        c.style.top=Math.random()*80+"%";
+        c.style.left=(-200)+"px";
+        c.style.animationDuration=(60+Math.random()*40)+"s";
+        sec.appendChild(c);
+      }
+    });
+
+    // Animate skills
+    const skills=document.querySelectorAll('.skill-progress');
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.style.width=e.target.getAttribute("data-skill");
+        }
+      });
+    },{threshold:0.5});
+    skills.forEach(s=>obs.observe(s));
+
+    // Hobby descriptions
+    const hobbyTexts={
+      music:"🎶 Music is my soul’s language — a rhythm that carries me away, softens my worries, and turns even silence into something beautiful. It’s my escape and my rhythm, making even ordinary moments feel alive.",
+      reading:"📚 Reading books expands my knowledge and sparks new ideas.",
+      gaming:"🎮 Gaming feels like my little escape — a world where I can pause reality, explore new universes, and let go of stress. It relaxes me because I get to immerse myself in stories, challenges, and adventures at my own pace, almost like a cozy retreat for the mind.",
+      travel:"✈️ I love exploring new cultures and places—it broadens my perspective.he pastel skies, the rustling leaves — they remind me how magical the simple things are.",
+      cooking:"🍳 Cooking feels like painting with flavors. I love how simple ingredients can come together into something warm and comforting. It relaxes me, sparks my creativity, and makes me happy when I can share what I’ve made with others",
+      art:"🎨 Art allows me to express emotions visually and balance my tech life. I try to put down my creative ideas into a piece of paper that now only showcase my interest but enhances my creativity. "
+    };
+    const desc=document.getElementById("hobby-desc");
+    document.querySelectorAll(".wheel-item").forEach(item=>{
+      item.addEventListener("click",()=>{
+        const hobby=item.getAttribute("data-hobby");
+        if(desc.textContent===hobbyTexts[hobby] && desc.classList.contains("show")){
+          desc.classList.remove("show");
+          setTimeout(()=>desc.textContent="",400);
+        } else {
+          desc.textContent=hobbyTexts[hobby];
+          desc.classList.add("show");
+        }
+      });
+    });
+
+    function submitForm(e){
+      e.preventDefault();
+      alert("Message sent! (Backend can be added here)");
+    }
+  </script>
+</body>
+</html>
